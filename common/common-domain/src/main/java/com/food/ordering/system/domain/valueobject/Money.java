@@ -16,6 +16,7 @@ import java.util.Objects;
  * <p>Because of BigDecimal(double val) constructor, result is somehow unpredictable</p>
  */
 public class Money {
+    public final static Money ZERO = new Money(BigDecimal.ZERO);
     private final BigDecimal amount;
 
     public Money(BigDecimal amount) {
@@ -83,8 +84,8 @@ public class Money {
      * @param money
      * @return Money Object
      */
-    public Money multiply(Money money) {
-        return new Money(setScale(this.amount.multiply(money.getAmount())));
+    public Money multiply(int money) {
+        return new Money(setScale(this.amount.multiply(new BigDecimal(money))));
     }
 
     /**
