@@ -67,6 +67,67 @@ public class Order extends AggregateRoot<OrderId> {
     }
 
     /**
+     * <p>Change order status from PENDING to PAID</p>
+     * @exception OrderDomainException
+     */
+    public void pay() {
+        if (orderStatus != OrderStatus.PENDING) {
+            throw new OrderDomainException("Order is not in correct state for pay operation");
+        }
+        orderStatus = OrderStatus.PAID;
+    }
+
+    /**
+     * Change order status from PAID to APPROVE
+     * @exception OrderDomainException
+     */
+    public void approve() {
+        if (orderStatus != OrderStatus.PAID) {
+            throw new OrderDomainException("Order is not in correct state for approve operation");
+        }
+
+        orderStatus = OrderStatus.APPROVED;
+    }
+
+    /**
+     * Change order status from PAID to CANCELLING
+     * failureMessages will be attached after current failure message
+     * @param failureMessages
+     * @exception OrderDomainException
+     */
+    public void initCancel(List<String> failureMessages) {
+        if (orderStatus != OrderStatus.PAID) {
+            throw new OrderDomainException("Order is not in correct status for init cancel operation");
+        }
+
+        orderStatus = OrderStatus.CANCELLING;
+        updateFailureMessage(failureMessages);
+    }
+
+    /**
+     * Change order to CANCELLED, can only happen when previously was PAID or CANCELLING.
+     * failureMessage will be attached after current failure message
+     * @param failureMessages
+     * @exception OrderDomainException
+     */
+    public void cancel(List<String> failureMessages) {
+        if (orderStatus != OrderStatus.PAID && orderStatus != OrderStatus.CANCELLING) {
+            throw new OrderDomainException("Order is not in correct status for cancel operation");
+        }
+        orderStatus = OrderStatus.CANCELLED;
+        updateFailureMessage(failureMessages);
+    }
+
+    private void updateFailureMessage(List<String> failureMessages) {
+        if (this.failureMessages != null && failureMessages != null) {
+            this.failureMessages.addAll(failureMessages);
+        }
+        if (this.failureMessages == null) {
+            this.failureMessages = failureMessages;
+        }
+    }
+
+    /**
      * <p>Validate if the order has been created</p>
      * @exception OrderDomainException
      */
