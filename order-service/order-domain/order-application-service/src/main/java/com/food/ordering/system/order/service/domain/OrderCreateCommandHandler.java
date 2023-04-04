@@ -33,6 +33,7 @@ public class OrderCreateCommandHandler {
     private final OrderRepository orderRepository;
     private final CustomerRepository customerRepository;
     private final RestaurantRepository restaurantRepository;
+    private final ApplicationDomainEventPublisher applicationDomainEventPublisher;
 
     /**
      * <p>Create Order has to be Transactional</p>
@@ -41,6 +42,9 @@ public class OrderCreateCommandHandler {
      * <p>3. Create Order Domain Entity</p>
      * <p>4. Create OrderCreatedEvent and this event will be fire to trigger payment service for this order</p>
      * <p>5. Save Order with Restaurant into order repository</p>
+     * <p>6. Publish event by ApplicationDomainEventPublisher publish method</p>
+     * <p>7. Listener will be OrderCreatedEventApplicationListener</p>
+     * @see ApplicationDomainEventPublisher
      * @param createOrderCommand
      * @return CreateOrderResponse
      */
@@ -52,6 +56,7 @@ public class OrderCreateCommandHandler {
         OrderCreatedEvent orderCreatedEvent = orderDomainService.validateAndInitiateOrder(order, restaurant);
         Order savedOrder = saveOrder(order);
         log.info("Order is created with order id: {}", savedOrder.getId().getValue());
+        applicationDomainEventPublisher.publish(orderCreatedEvent);
         return orderDataMapper.orderToCreateOrderResponse(savedOrder);
     }
 
