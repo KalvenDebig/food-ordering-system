@@ -38,7 +38,7 @@ public class OrderCreateCommandHandler {
      * <p>Use OrderCreateHelper to persist order and generate OrderCreatedEvent, then pass OrderCreatedEvent into
      * publisher to publish.</p>
      * @param createOrderCommand
-     * @return
+     * @return CreateOrderResponse
      */
     public CreateOrderResponse createOrder(CreateOrderCommand createOrderCommand) {
         OrderCreatedEvent orderCreatedEvent = orderCreateHelper.persistOrder(createOrderCommand);
