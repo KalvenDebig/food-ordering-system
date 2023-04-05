@@ -2,6 +2,11 @@
 ```bash
 mvn com.github.ferstl:depgraph-maven-plugin:aggregate -DcreateImage=true -DreduceEdge=false -Dscope=compile "-Dincludes=com.food.ordering.system*:*"
 ```
+# Create Kafka Model by Using Avro Schema
+```bash
+cd /infrastructure/kafka/kafka-model 
+mvn clean install
+```
 
 # MicroService
 
