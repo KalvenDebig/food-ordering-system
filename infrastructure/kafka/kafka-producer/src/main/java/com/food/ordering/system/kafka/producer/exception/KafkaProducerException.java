@@ -1,6 +1,11 @@
-package com.food.ordering.system.kafka.producer.exception;/**
- * 
- * @project food-ordering-system
+package com.food.ordering.system.kafka.producer.exception;
+
+/**
  * @author kalvens on 4/5/23
- */public class KafkaProducerException {
+ * @project food-ordering-system
+ */
+public class KafkaProducerException extends RuntimeException {
+    public KafkaProducerException(String message) {
+        super(message);
+    }
 }
