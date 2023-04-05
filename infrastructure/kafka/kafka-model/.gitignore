@@ -141,8 +141,3 @@ Desktop.ini
 ######################
 .eslintcache
 /.idea/
-
-######################
-# Docker for Kafka
-#######################
-/infrastructure/docker-compose/volumes/
